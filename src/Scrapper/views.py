@@ -1,5 +1,7 @@
-from django.shortcuts import render,redirect
-from django.http import  HttpResponse,HttpResponseRedirect
-# Create your views here.
-def index(request) :
-    return HttpResponse("Hello world")
+from django.shortcuts import render
+
+
+def index(request):
+
+    # Your view logic here
+    return render(request, 'index.html')
