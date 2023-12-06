@@ -1,7 +1,15 @@
 import json
+import re
 
 import requests
-from bs4 import BeautifulSoup
+from lxml import etree
+from lxml import html
+
+def clean_text(text):
+    text = text.replace("\n", " ")
+    text = text.strip()
+    text = re.sub(r"\s+", " ", text)
+    return text
 
 def web_request(url, headers):
     response = requests.get(url, headers)
@@ -14,20 +22,14 @@ def product_info(url):
     response = web_request(url, headers)
     if response.status_code == 200:
         results = dict()
-        soup = BeautifulSoup(response.content, 'lxml')
-        specs = soup.find_all('div', class_='specs')
+        tree = html.fromstring(response.content)
+        specs = tree.xpath('.//div[@class="specs"]/dl[@class="specs__list"]/div[@class="specs__row"]')
         for spec in specs:
-            spec_list = spec.find('dl', class_='specs__list')
-            if spec_list is None:
-                continue
-            spec_rows = spec_list.find_all('div', class_='specs__row')
-            if spec_rows is None:
-                continue
-            for spec_row in spec_rows:
-                spec_title = spec_row.find('dt', class_='specs__title').stripped_strings.__next__()
-                spec_value = spec_row.find('dd', class_='specs__value').stripped_strings.__next__()
-                if spec_title and spec_value:
-                    results[spec_title] = spec_value
+            spec_title = spec.xpath('.//dt[@class="specs__title"]/text()')
+            spec_value = spec.xpath('.//dd[@class="specs__value"]')
+            if spec_title and spec_value:
+                results[spec_title[0].strip()] = clean_text(spec_value[0].text_content().strip())
+
         json_string = json.dumps(results, indent=4)
         return json_string
     else:
@@ -37,5 +39,3 @@ def product_info(url):
 if __name__ == "__main__":
     results = product_info("")
     print(results)
-    # might need to decode the json string as it does not support utf-8
-    #text = bytes(text, encoding="raw_unicode_escape").decode('unicode_escape')
