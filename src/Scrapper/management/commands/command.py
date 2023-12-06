@@ -26,3 +26,6 @@ class Command(BaseCommand):
         print(new_prices)
         
         save_product_info(result, url, new_prices)
+
+# Command to run 
+# python manage.py command --website=bol.com --search="your_search_query" --headless
