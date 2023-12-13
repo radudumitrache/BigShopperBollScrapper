@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Feed(models.Model):
@@ -8,6 +9,16 @@ class Feed(models.Model):
     lastretrievedtimestamp = models.DateTimeField(null=True, blank=True)
     feedtype = models.CharField(max_length=50, null=True, blank=True)
     laststatus = models.CharField(max_length=50, null=True, blank=True)
+
+
+class Product(models.Model):
+    productid = models.AutoField(primary_key=True)
+    partnerid = models.IntegerField()
+    ean = models.CharField(max_length=13)
+    producttitle = models.CharField(max_length=255)
+    producturl = models.CharField(max_length=1000)
+    sellername = models.CharField(max_length=255, null=True, blank=True)
+    lastscrapedtimestamp = models.DateTimeField(default=timezone.now)
 
 
 class Partner(models.Model):
@@ -35,16 +46,6 @@ class PriceTrendSummary(models.Model):
     averagesaleprice = models.DecimalField(max_digits=10, decimal_places=2)
     minprice = models.DecimalField(max_digits=10, decimal_places=2)
     maxprice = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-class Product(models.Model):
-    productid = models.IntegerField(primary_key=True)
-    partnerid = models.IntegerField(null=True, blank=True)
-    ean = models.CharField(max_length=13)
-    producttitle = models.CharField(max_length=255)
-    producturl = models.CharField(max_length=1000)
-    sellername = models.CharField(max_length=255, null=True, blank=True)
-    lastscrapedtimestamp = models.DateTimeField(null=True, blank=True)
 
 
 class ProductSpecification(models.Model):

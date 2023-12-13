@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import django.db
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,6 +89,12 @@ DATABASES = {
         'PORT': '5432',  # Leave blank to use the default port
     }
 }
+
+try:
+    django.db.connections['default'].ensure_connection()
+    print("Database connection established successfully.")
+except django.db.DatabaseError as e:
+    print(f"Error connecting to the database: {e}")
 
 
 AUTH_PASSWORD_VALIDATORS = [

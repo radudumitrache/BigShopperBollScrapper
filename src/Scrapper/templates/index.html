@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sample Title</title>
+    <title>Product List</title>
 </head>
 <body>
-<h1> Hello everyone</h1>
+    <h1>Product List</h1>
+
+    <ul>
+        {% for product in products %}
+        <li>
+            <h2>{{ product.producttitle }}</h2>
+            <p>Product ID: {{ product.productid }}</p>
+            <p>Partner ID: {{ product.partner.partnerid }}</p>
+            <p>EAN: {{ product.ean }}</p>
+            <p>Product URL: <a href="{{ product.producturl }}">{{ product.producturl }}</a></p>
+            <p>Seller Name: {{ product.sellername }}</p>
+            <p>Last Scraped Timestamp: {{ product.lastscrapedtimestamp }}</p>
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
