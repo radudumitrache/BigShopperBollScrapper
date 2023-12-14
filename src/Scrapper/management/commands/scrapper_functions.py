@@ -189,3 +189,18 @@ def get_product_price(url):
         print(f"Request failed with status code: {response.status_code}")
         return None
         # Add your logic here for what to do when the status is not 299
+def get_product_result_dictionary(url) :
+     product_Info = product_info(url)
+     all_sellers_info = get_all_sellers_info(url)
+     country_code = get_country_code(url)
+     product_name = get_product_name(url)
+     product_price = get_product_price(url)
+     result_dict = {
+         "name": product_name,
+         "product_price": product_price,
+         "country_code": country_code,
+         "product_info": product_Info,
+         "other_sellers": all_sellers_info,
+     }
+     return result_dict
+
