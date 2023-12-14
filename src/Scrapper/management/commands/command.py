@@ -3,6 +3,8 @@ from django.core.management.base import BaseCommand
 #import bol scraper function
 #import save_to_db
 #import new prices from sellers
+from .scrapper_functions import *
+import json
 
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
@@ -16,13 +18,9 @@ class Command(BaseCommand):
         website = kwargs["website"]
         search = kwargs["search"]
         option = kwargs["headless"]
-        print(option)
+        # url = scrape_bol(search, website)  # Adjust line based on bol.com scraping logic
         
+        # result = scrape_bol_com(url)  # Adjust line based on bol.com scraping logic
+        # new_prices = get_new_prices_from_sellers(url, option)
 
-        url = scrape_bol(search, website)  # Adjust line based on bol.com scraping logic
-        
-        result = scrape_bol_com(url)  # Adjust line based on bol.com scraping logic
-        new_prices = get_new_prices_from_sellers(url, option) 
-        print(new_prices)
-        
-        save_product_info(result, url, new_prices)
+        # save_product_info(result, url, new_prices)

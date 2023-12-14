@@ -1,6 +1,7 @@
 from lxml import html
 from urllib.parse import urlparse
 import requests
+import re
 import json
 # Define the URL of the web page you want to scrape
 URL = "https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/?bltgh=hv-IEzy4P-OI9nskywJCaA.2_18.22.ProductTitle"
@@ -25,6 +26,36 @@ HEADERS = {
                   'Safari/537.36'
 }
 
+def clean_text(text):
+    text = text.replace("\n", " ")
+    text = text.strip()
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+def web_request(url, headers):
+    response = requests.get(url, headers)
+    return response
+
+def product_info(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0'
+    }
+    response = web_request(url, headers)
+    if response.status_code == 200:
+        results = dict()
+        tree = html.fromstring(response.content)
+        specs = tree.xpath('.//div[@class="specs"]/dl[@class="specs__list"]/div[@class="specs__row"]')
+        for spec in specs:
+            spec_title = spec.xpath('.//dt[@class="specs__title"]/text()')
+            spec_value = spec.xpath('.//dd[@class="specs__value"]')
+            if spec_title and spec_value:
+                results[spec_title[0].strip()] = clean_text(spec_value[0].text_content().strip())
+
+        json_string = json.dumps(results, indent=4)
+        return json_string
+    else:
+        print("Error: ", response.status_code)
+        return None
 
 def get_sellers(siteurl):
     dict_sellers = {}
@@ -51,9 +82,9 @@ def get_sellers(siteurl):
         return None
 
 
-def get_all_sellers_info():
+def get_all_sellers_info(url):
     # Make a request
-    response = requests.get(URL, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS)
 
     # Check the status code
     if response.status_code == 200:
@@ -66,7 +97,8 @@ def get_all_sellers_info():
         if (len(all_sellers_url) > 0):
             all_sellers_url = "https://www.bol.com" + all_sellers_url[0]
             return get_sellers(all_sellers_url)
-
+        else :
+            return "No other sellers"
 
     else:
         print(f"Request failed with status code: {response.status_code}")
@@ -124,7 +156,7 @@ def get_product_name(url):
 
     except Exception as e:
         print(f"Error: {e}")
-def product_price(url):
+def get_product_price(url):
     # Make a request
     response = requests.get(URL, headers=HEADERS)
 
@@ -149,7 +181,7 @@ def product_price(url):
         if (len(old_price_content) > 0):
             old_price = old_price_content[0].text_content().replace(',', '.')
             print(old_price)
-            return (price, old_price)
+            return {"current_price": price , "old_price" : price}
         else:
             return price
 
