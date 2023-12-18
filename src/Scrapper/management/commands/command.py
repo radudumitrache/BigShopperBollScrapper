@@ -1,9 +1,5 @@
 from django.core.management.base import BaseCommand
-#import bol scraper module 
-#import bol scraper function
-#import save_to_db
-#import new prices from sellers
-from .scrapper_functions import* 
+from .scrapper_functions import *
 
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
@@ -18,16 +14,16 @@ class Command(BaseCommand):
         search = kwargs["search"]
         option = kwargs["headless"]
         print(option)
-        
+
         product_Info = product_info(website)
-        all_sellers_info = get_all_sellers_info(website)
+        all_sellers_info = get_all_sellers_info()
         country_code = get_country_code(website)
         product_name = get_product_name(website)
-        product_price = get_product_price(website)
-        
+        _product_price = product_price(website)
+
         result_dict = {
             "name" : product_name,
-            "product_price" : product_price,
+            "product_price" : _product_price,
             "country_code" : country_code,
             "product_info" : product_Info,
             "other_sellers" : all_sellers_info,
@@ -35,6 +31,5 @@ class Command(BaseCommand):
 
         print(result_dict)
 
-
-# Command to run 
+# Command to run
 # python manage.py command --website=bol.com --search="your_search_query" --headless
