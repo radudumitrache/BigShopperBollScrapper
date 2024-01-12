@@ -31,7 +31,7 @@ class Command(BaseCommand):
             all_sellers_info = get_all_sellers_info(product_url)
             country_code = get_country_code(product_url)
             product_name = get_product_name(product_url)
-            # product_price = product_price(product_url)
+            product_price = get_product_price(product_url)
 
             result_dict = {
                 "name" : product_name,

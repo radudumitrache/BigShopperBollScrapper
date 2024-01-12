@@ -25,7 +25,7 @@ HEADERS = {
 }
 
 
-def product_price(url):
+def get_product_price(url):
     # Make a request
     response = requests.get(url, headers=HEADERS)
 
