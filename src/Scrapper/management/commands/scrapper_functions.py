@@ -171,16 +171,13 @@ def get_product_price(url):
         price_content = parsed_content.xpath('//span[@class="promo-price"]')
         price = ""
         for element in price_content:
-            print(element.text_content())
             price += element.text_content().replace('\n', '.').replace(' ', '')
         price = price.replace('-', '0')
         price = float(price[:-1])
-        print(float(price))
         old_price_content = parsed_content.xpath(
             '//div[starts-with(@class, "ab-discount")]/del[@data-test="list-price"]')
         if (len(old_price_content) > 0):
             old_price = old_price_content[0].text_content().replace(',', '.')
-            print(old_price)
             return {"current_price": price , "old_price" : price}
         else:
             return price
