@@ -13,11 +13,11 @@ from multiprocessing import Process, Manager
 def scrape(items: list):
     output_urls = []
     output_titles = []
-    index_counter = -1
 
     for item in items:
-        index_counter += 1
         time.sleep(random.uniform(0.5, 1))
+        index_counter = items.index(item)
+
         input_title = f"{item}"
         input_title = input_title.strip().replace(' ', '-').lower()
         country_code = "nl"
@@ -41,6 +41,9 @@ def scrape(items: list):
 
         while True:
             # Check if item is valid EAN
+            if item.replace(" ", "") == "":
+                break
+
             if item.isdigit() is True and len(item) < 13:
                 output_titles.append(f"Item at index: {index_counter} is invalid")
                 output_urls.append(f"Item at index: {index_counter} is invalid")
@@ -67,9 +70,6 @@ def scrape(items: list):
 
                 urls_list = []
                 titles_list = []
-                max_ratio = 0
-                best_ratio_match_title = ''
-                min_lev_distance = 99999
 
                 for element in elements:
                     try:
@@ -99,7 +99,6 @@ def scrape(items: list):
 
                     # check if it's an EAN or not
                     if input_title.isdigit():
-                        # maybe append these to the output lists
                         best_match_url = url
                         best_match_title = current_title
 
@@ -116,13 +115,14 @@ def scrape(items: list):
             else:
                 print(f"Request failed with status code: {response.status_code}")
                 break
+
     return output_urls, output_titles
 
-def main():
 
+
+def main():
     item_url_out = []
     item_title_out = []
-
 
     EANS = ['0711719423898', '0', '123', '0711719571667', '5400882001235', '4712759214350', '4711387128206',
             '4719072793814', '0195891063859']
@@ -130,17 +130,14 @@ def main():
     titles = ['Playstation 5 disc edition', 'RTX 4070 Asus Dual Schwartz', 'sdajkhdaskjhasdkjdhaskjhd',
               'Casio Calculator', 'Rolex golden watch', 'Nails', 'Iphone 13 mitternacht']
 
-    items = titles
+    items = EANS
 
     item_url_out, item_title_out = scrape(items)
-    for item_url in item_url_out :
-        if "invalid" not in item_url :
+    for item_url in item_url_out:
+        if "invalid" not in item_url:
             with open("result.json", "a") as outfile:
                 result_dict = get_product_result_dictionary(item_url)
-                json.dump( result_dict, outfile)
-
-
-
+                json.dump(result_dict, outfile)
 
 
 if __name__ == '__main__':
