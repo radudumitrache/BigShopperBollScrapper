@@ -27,7 +27,7 @@ HEADERS = {
 
 def product_price(url):
     # Make a request
-    response = requests.get(URL, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS)
 
     # Check the status code
     if response.status_code == 200:

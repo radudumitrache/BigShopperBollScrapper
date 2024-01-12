@@ -2,7 +2,6 @@ from lxml import html
 import requests
 import json
 # Define the URL of the web page you want to scrape
-URL = "https://www.bol.com/nl/nl/p/playstation-5-disc-edition-ea-sports-fc-24-bundel-downloadcode/9300000159908887/?bltgh=vrcXDKQDJBKHKeFpFjpODw.2_18.19.ProductTitle"
 HEADERS = {
     'authority': 'spoor.bol.com',
     'method': 'GET',
@@ -31,23 +30,21 @@ def get_sellers(siteurl) :
         page_content = response.content
         page_content_dict = json.loads(page_content.decode('utf-8'))
         offers = (page_content_dict.get('content').get('offers').get('offers'))
-        # print (offers[0])    
         for offer in offers :
             seller = offer.get('aboutSeller')
             offer_info = offer.get('aboutOffer')
             price = offer.get('aboutPrice')
-            # print (seller.get('sellerDisplayName'))
-            # print (f"{seller.get('sellerDisplayName')} - {price.get('price')}")
+
             dict_sellers[seller.get('sellerDisplayName')] = {"seller_rating" : offer.get('sellerRating').get("rating").get("sellerRating") , "price" : price.get('price') ,
                                                               "condition" : offer_info.get('condition')}
         return dict_sellers
     else:
         print(f"Request failed with status code: {response.status_code}")
         return None
-def get_all_sellers_info() :
+def get_all_sellers_info(url) :
     
     # Make a request
-    response = requests.get(URL, headers=HEADERS) 
+    response = requests.get(url, headers=HEADERS)
 
     # Check the status code
     if response.status_code == 200:
@@ -65,5 +62,3 @@ def get_all_sellers_info() :
     else:
         print(f"Request failed with status code: {response.status_code}")
         return None
-        # Add your logic here for what to do when the status is not 299
-print(get_all_sellers_info())

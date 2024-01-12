@@ -35,7 +35,3 @@ def product_info(url):
     else:
         print("Error: ", response.status_code)
         return None
-
-if __name__ == "__main__":
-    results = product_info("")
-    print(results)
