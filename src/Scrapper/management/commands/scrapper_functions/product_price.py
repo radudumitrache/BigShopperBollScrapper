@@ -27,8 +27,11 @@ HEADERS = {
 
 def get_product_price(url):
     # Make a request
-    response = requests.get(url, headers=HEADERS)
-
+    try :
+        response = requests.get(url, headers=HEADERS)
+    except:
+        print("Invalid Url")
+        return None
     # Check the status code
     if response.status_code == 200:
         print(response.status_code)
@@ -40,7 +43,7 @@ def get_product_price(url):
         price_content = parsed_content.xpath('//span[@class="promo-price"]')
         price = ""
         for element in price_content:
-            print(element.text_content())
+            # print(element.text_content())
             price += element.text_content().replace('\n', '.').replace(' ', '')
         price = price.replace('-', '0')
         price = float(price[:-1])
