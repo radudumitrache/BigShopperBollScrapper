@@ -5,8 +5,12 @@ from django.core.management.base import BaseCommand
 #import new prices from sellers
 from .scrapper_functions import *
 import json
+
 from .scrapper_functions import *
 from .scrapper_functions import search_for_product
+import sys
+sys.path.append('..')
+from src.Scrapper.models import *
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
 
@@ -14,6 +18,8 @@ class Command(BaseCommand):
         parser.add_argument("--website", help="Input bol.com", type=str)
         parser.add_argument("--headless", action='store_true', help="Input the headless options")
         parser.add_argument("--search", help="Input the search query (ean or title)", nargs = '*', type=str)
+    def save_to_db(self, result : dict  ):
+        pass
     def handle(self, *args, **kwargs):
         website = kwargs["website"]
         search = kwargs["search"]
@@ -31,7 +37,7 @@ class Command(BaseCommand):
             all_sellers_info = get_all_sellers_info(product_url)
             country_code = get_country_code(product_url)
             product_name = get_product_name(product_url)
-            # product_price = product_price(product_url)
+            product_price = get_product_price(product_url)
 
             result_dict = {
                 "name" : product_name,
@@ -40,8 +46,13 @@ class Command(BaseCommand):
                 "product_info" : product_Info,
                 "other_sellers" : all_sellers_info,
             }
-
+            #try to find if the product already exists
+            try :
+                product = Product.objects.get(producturl=product_url)
+            except :
+                product = Product.objects.create()
             print(result_dict)
+            #save product to db
 
 # Command to run
 # python manage.py command --website=bol.com --search="your_search_query" --headless
