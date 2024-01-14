@@ -2,7 +2,7 @@ import unittest
 
 from src.Scrapper.management.commands.scrapper_functions.countryCode import get_country_code
 
-class TestCountrycode(unittest.TestCase):
+class TestCountryCode(unittest.TestCase):
     def test_expect_nl(self):
         self.assertEqual(get_country_code("https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"), "NL")
 
