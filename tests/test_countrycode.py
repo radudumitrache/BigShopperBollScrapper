@@ -1,4 +1,5 @@
 import unittest
+
 from src.Scrapper.management.commands.scrapper_functions.countryCode import get_country_code
 
 class TestCountrycode(unittest.TestCase):
