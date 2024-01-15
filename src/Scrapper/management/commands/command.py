@@ -43,7 +43,6 @@ class Command(BaseCommand):
                 "product_info" : product_info,
                 "other_sellers" : all_sellers_info,
             }
-
             print(result_dict)
 
 # Command to run

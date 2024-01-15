@@ -26,17 +26,23 @@ def get_sellers(siteurl) :
     dict_sellers = {} 
     response = requests.get(siteurl, headers=HEADERS) 
     if response.status_code == 200:
-        print(response.status_code)
-        page_content = response.content
-        page_content_dict = json.loads(page_content.decode('utf-8'))
-        offers = (page_content_dict.get('content').get('offers').get('offers'))
-        for offer in offers :
-            seller = offer.get('aboutSeller')
-            offer_info = offer.get('aboutOffer')
-            price = offer.get('aboutPrice')
 
-            dict_sellers[seller.get('sellerDisplayName')] = {"seller_rating" : offer.get('sellerRating').get("rating").get("sellerRating") , "price" : price.get('price') ,
-                                                              "condition" : offer_info.get('condition')}
+        page_content = response.content
+        parsed_content = html.fromstring(page_content)
+        other_sellers = parsed_content.xpath('//ul[@id="offers"]/*')
+        
+        for seller in other_sellers :
+
+            about_seller_block = seller.xpath('.//div[@data-test="about-seller-block"]')
+            about_offer_block = seller.xpath('.//div[@data-test="about-offer-block"]')
+            about_price_block = seller.xpath('.//div[@data-test="about-price-block"]')
+            seller_name = about_seller_block[0].xpath('.//p/*')[0].text_content()
+            seller_price = about_price_block[0].xpath('.//span[@class="h-nowrap product-prices__bol-price"]')[0].text_content().replace('\n','').replace(' ','')
+            offer_condition = about_offer_block[0].xpath('.//div[@class="about-offer-condition"]//strong')[0].text_content()
+            seller_rating = seller.xpath('.//div[@data-test="seller-rating"]')[0].text_content().replace('\n','').replace(' ','')
+            # print([seller_name,seller_price,offer_condition,seller_rating])
+            dict_sellers[seller_name] = {"seller_rating": seller_rating,"seller_price" : seller_price,"condition" : offer_condition}
+
         return dict_sellers
     else:
         print(f"Request failed with status code: {response.status_code}")
