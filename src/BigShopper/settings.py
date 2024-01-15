@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'BigShopper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ScraperDB',  # Replace with your database name
+        'NAME': 'postgres',  # Replace with your database name
         'USER': 'rares',  # Replace with your database user
-        'PASSWORD': 'vegas@123',  # Replace with your database password
+        'PASSWORD': 'rares',  # Replace with your database password
         'HOST': 'localhost',  # Or the IP address of your database server
         'PORT': '5432',  # Leave blank to use the default port
     }

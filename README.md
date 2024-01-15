@@ -1,22 +1,7 @@
-# Connecting to the Database in PyCharm:
-1. Install PostgreSQL 
-2. Open the Project in PyCharm where the schema.sql file is located.
-3. Go to "View" > "Tool Windows" > "Database" to open the Database tool window.
-4. In the Database tool window, click the "+" icon to add a new data source.
-5. Select "Data Source" > "PostgreSQL."
+# Importing the database schema to your local database in PyCharm:
 
-   
-# Configure the data source with the following details:
-- Host: localhost
-- Port: usually 5432
-- Database: ScraperDB
-- User: clarissa mitch radu stefan zsombor beyza lorand
-- Password: clarissa mitch radu stefan zsombor beyza lorand
+- After setting up PostgreSQL on your computer, navigate to PyCharm and connect to your local database, which is typically named 'postgres' by default.
+- Once connected to your local database, import the schema by right-clicking on the local database, selecting 'SQL Script,' and running the SQL script.
+- This process will import all the database tables and data for you.
 
-# Test the Connection: Verify the database connection to ensure that your credentials are correct, and the database server is accessible.
-
-   
-# Updating the schema.sql File for GitHub:
-1. SQL Script: The schema.sql file must be run before pushing 
-
-
+  
