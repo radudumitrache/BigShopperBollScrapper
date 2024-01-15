@@ -8,9 +8,7 @@ import json
 
 from .scrapper_functions import *
 from .scrapper_functions import search_for_product
-import sys
-sys.path.append('..')
-from src.Scrapper.models import *
+
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
 
@@ -47,10 +45,6 @@ class Command(BaseCommand):
                 "other_sellers" : all_sellers_info,
             }
             #try to find if the product already exists
-            try :
-                product = Product.objects.get(producturl=product_url)
-            except :
-                product = Product.objects.create()
             print(result_dict)
             #save product to db
 
