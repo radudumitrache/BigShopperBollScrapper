@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import django.db
-
+import django
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,9 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Scrapper'
+    'Scrapper.apps.ScrapperConfig'
 ]
-
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,9 +81,9 @@ WSGI_APPLICATION = 'BigShopper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Replace with your database name
-        'USER': 'rares',  # Replace with your database user
-        'PASSWORD': 'rares',  # Replace with your database password
+        'NAME': 'ScraperDB',  # Replace with your database name
+        'USER': 'postgres',  # Replace with your database user
+        'PASSWORD': 'qwerty',  # Replace with your database password
         'HOST': 'localhost',  # Or the IP address of your database server
         'PORT': '5432',  # Leave blank to use the default port
     }
@@ -111,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+django.setup()
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
