@@ -1,13 +1,10 @@
-import os
 import random
-import json
-from lxml import html
-import requests
-from Levenshtein import distance, ratio
 import re
 import time
-from multiprocessing import Process, Manager
 
+import requests
+from Levenshtein import ratio
+from lxml import html
 
 def searchForItem(items: list):
     output_urls = []
@@ -116,7 +113,3 @@ def searchForItem(items: list):
                 print(f"Request failed with status code: {response.status_code}")
                 break
     return output_urls
-
-
-
-
