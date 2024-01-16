@@ -32,8 +32,8 @@ class Command(BaseCommand):
         for product_url in products_urls:
             product_info = get_product_info(product_url, headers)
             all_sellers_info = get_all_sellers_info(product_url, headers)
-            country_code = get_country_code(product_url, headers)
-            product_name = get_product_name(product_url, headers)
+            country_code = get_country_code(product_url)
+            product_name = get_product_name(product_url)
             product_price = get_product_price(product_url, headers)
 
             result_dict = {
