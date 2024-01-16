@@ -7,4 +7,4 @@ class TestCountryCode(unittest.TestCase):
         self.assertEqual(get_country_code("https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"), "NL")
 
     def test_expect_be(self):
-        self.assertEqual(get_country_code("https://www.bol.com/be/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"), "BE")
+        self.assertEqual(get_country_code("https://www.bol.com/nl/be/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"),"BE")

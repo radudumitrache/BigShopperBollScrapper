@@ -30,7 +30,7 @@ def get_sellers(siteurl) :
         page_content = response.content
         parsed_content = html.fromstring(page_content)
         other_sellers = parsed_content.xpath('//ul[@id="offers"]/*')
-        
+
         for seller in other_sellers :
 
             about_seller_block = seller.xpath('.//div[@data-test="about-seller-block"]')

@@ -3,12 +3,14 @@ from django.core.management.base import BaseCommand
 #import bol scraper function
 #import save_to_db
 #import new prices from sellers
+
 from .scrapper_functions import *
 import json
 
 from .scrapper_functions import *
 from .scrapper_functions import search_for_product
-
+import sys
+from ...models import *
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
 
@@ -46,6 +48,7 @@ class Command(BaseCommand):
             }
             #try to find if the product already exists
             print(result_dict)
+
             #save product to db
 
 # Command to run

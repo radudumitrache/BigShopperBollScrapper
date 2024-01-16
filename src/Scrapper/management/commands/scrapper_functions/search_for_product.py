@@ -7,8 +7,6 @@ from Levenshtein import distance, ratio
 import re
 import time
 from multiprocessing import Process, Manager
-
-
 def searchForItem(items: list):
     output_urls = []
     output_titles = []
