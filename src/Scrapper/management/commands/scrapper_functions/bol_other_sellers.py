@@ -40,7 +40,7 @@ def get_all_sellers_info(url, headers):
 
         if (len(all_sellers_url) > 0):
             all_sellers_url = "https://www.bol.com" + all_sellers_url[0]
-            return get_sellers(all_sellers_url)
+            return get_sellers(all_sellers_url, headers)
     else:
         print(f"Request failed with status code: {response.status_code}")
         return None
