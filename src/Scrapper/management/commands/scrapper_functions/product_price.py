@@ -16,7 +16,7 @@ def get_product_price(url, headers):
         price_content = parsed_content.xpath('//span[@class="promo-price"]')
         price = ""
         for element in price_content:
-            print(element.text_content())
+            # print(element.text_content())
             price += element.text_content().replace('\n', '.').replace(' ', '')
         price = price.replace('-', '0')
         price = float(price[:-1])

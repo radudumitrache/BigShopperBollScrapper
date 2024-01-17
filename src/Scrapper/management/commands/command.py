@@ -44,6 +44,7 @@ class Command(BaseCommand):
                 "other_sellers" : all_sellers_info,
             }
             print(result_dict)
+            #save product to db
 
 # Command to run
 # python manage.py command --website=bol.com --search="your_search_query" --headless
