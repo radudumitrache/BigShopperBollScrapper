@@ -1,6 +1,6 @@
 import unittest
 
-from src.Scrapper.management.commands.scrapper_functions.countryCode import get_country_code
+from src.Scrapper.management.commands.scrapper_functions.country_code import get_country_code
 
 class TestCountryCode(unittest.TestCase):
     def test_expect_nl(self):

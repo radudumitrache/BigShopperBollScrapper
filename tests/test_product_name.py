@@ -1,6 +1,6 @@
 import unittest
 
-from src.Scrapper.management.commands.scrapper_functions.productName import get_product_name
+from src.Scrapper.management.commands.scrapper_functions.product_name import get_product_name
 
 class TestProductName(unittest.TestCase):
     def test_expect_ps4(self):
