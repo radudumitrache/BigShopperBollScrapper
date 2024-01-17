@@ -7,8 +7,6 @@ def get_product_price(url, headers):
 
     # Check the status code
     if response.status_code == 200:
-        print(response.status_code)
-
         page_content = response.content
 
         parsed_content = html.fromstring(page_content)
@@ -20,7 +18,7 @@ def get_product_price(url, headers):
             price += element.text_content().replace('\n', '.').replace(' ', '')
         price = price.replace('-', '0')
         price = float(price[:-1])
-        print(float(price))
+
         old_price_content = parsed_content.xpath(
             '//div[starts-with(@class, "ab-discount")]/del[@data-test="list-price"]')
         if (len(old_price_content) > 0):

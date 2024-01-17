@@ -32,8 +32,6 @@ def get_all_sellers_info(url, headers):
 
     # Check the status code
     if response.status_code == 200:
-        print(response.status_code)
-
         page_content = response.content
         parsed_content = html.fromstring(page_content)
         all_sellers_url = parsed_content.xpath('//a[@data-label="all-sellers"]/@href')
