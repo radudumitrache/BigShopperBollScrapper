@@ -3,8 +3,10 @@ import unittest
 from src.Scrapper.management.commands.scrapper_functions.product_name import get_product_name
 
 class TestProductName(unittest.TestCase):
-    def test_expect_ps4(self):
-        self.assertIn("controller", get_product_name("https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"))
+    def test_expect_success(self):
+        result = get_product_name("https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/")
+        self.assertEqual("Sony PlayStation DualSense draadloze controller - PS5", result)
 
-    def test_does_not_throw_error(self):
-        self.assertIsNotNone(get_product_name("https://www.bol.com/nl/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"))
+    def test_expect_exception(self):
+        with self.assertRaises(expected_exception=Exception):
+            get_product_name("Invalid")

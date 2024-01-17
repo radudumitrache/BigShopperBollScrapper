@@ -12,6 +12,7 @@ class TestOtherSellers(unittest.TestCase):
         result = get_all_sellers_info(url, headers)
         self.assertIs(type(result), dict)
 
-    def test_is_not_none(self):
-        result = get_all_sellers_info(url, headers)
-        self.assertIsNotNone(result)
+    def test_invalid_url_expect_exception(self):
+        with self.assertRaises(expected_exception=Exception):
+            result = get_all_sellers_info("Invalid", headers)
+            self.assertIsNotNone(result)
