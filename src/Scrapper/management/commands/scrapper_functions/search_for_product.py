@@ -6,18 +6,19 @@ import requests
 from Levenshtein import ratio
 from lxml import html
 
-def searchForItem(items: list):
+def searchForItem(items: list, headers, country_code="nl", language_code="nl"):
     output_urls = []
     output_titles = []
     index_counter = -1
+
+    if type(items) is not list:
+        raise Exception('Input is not a list')
 
     for item in items:
         index_counter += 1
         time.sleep(random.uniform(0.5, 1))
         input_title = f"{item}"
         input_title = input_title.strip().replace(' ', '-').lower()
-        country_code = "nl"
-        language_code = "nl"
         URL = f"https://www.bol.com/{country_code}/{language_code}/s/?searchtext={input_title}"
 
         # remove trailing white spaces, and normal ones changed to '-' since url will be using it like that
@@ -26,14 +27,6 @@ def searchForItem(items: list):
 
         if language_code != "fr" and language_code != "nl":
             raise Exception('Language not supported')
-
-        # Define the URL of the web page you want to scrape
-
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/119.0.0.0'
-                          'Safari/537.36'
-        }
 
         while True:
             # Check if item is valid EAN

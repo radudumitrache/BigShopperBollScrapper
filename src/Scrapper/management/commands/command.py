@@ -27,7 +27,7 @@ class Command(BaseCommand):
             # select random header
             headers = random.choice(data)
 
-        products_urls = searchForItem(search)
+        products_urls = searchForItem(search, headers, region)
 
         for product_url in products_urls:
             product_info = get_product_info(product_url, headers)
