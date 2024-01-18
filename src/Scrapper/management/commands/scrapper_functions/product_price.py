@@ -1,7 +1,7 @@
 from lxml import html
 import requests
 
-def get_product_price(url, headers):
+def get_product_price(url, headers, xpath):
     # Make a request
     response = requests.get(url, headers=headers)
 
@@ -11,7 +11,7 @@ def get_product_price(url, headers):
 
         parsed_content = html.fromstring(page_content)
 
-        price_content = parsed_content.xpath('//span[@class="promo-price"]')
+        price_content = parsed_content.xpath(xpath[0])
         price = ""
         for element in price_content:
             # print(element.text_content())
@@ -19,8 +19,7 @@ def get_product_price(url, headers):
         price = price.replace('-', '0')
         price = float(price[:-1])
 
-        old_price_content = parsed_content.xpath(
-            '//div[starts-with(@class, "ab-discount")]/del[@data-test="list-price"]')
+        old_price_content = parsed_content.xpath(xpath[1])
         if (len(old_price_content) > 0):
             old_price = old_price_content[0].text_content().replace(',', '.')
             print(old_price)
