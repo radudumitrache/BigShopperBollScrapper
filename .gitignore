@@ -537,4 +537,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,git,pycharm,pycharm+all,linux,venv,macos,windows
 
+result.json
 .vscode
