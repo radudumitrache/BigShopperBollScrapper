@@ -25,31 +25,32 @@ headers = {
                   'Safari/537.36'
 }
 
-
-def get_product_name(url_to_scrape):
+def get_country_code(url_to_scrape):
     try:
         # Send an HTTP request to the URL
         response = requests.get(url_to_scrape)
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
-            # Parse the HTML content
-            parsed_content = html.fromstring(response.content)
+            # split url by '/' and get second element for country code
+            parsed_url = urlparse(url_to_scrape)
+            path_components = parsed_url.path.split('/')
 
-            # Specify XPath expressions for name and URL
-            xpath_name = '//span[@class="u-mr--xs"]/text()'
+            # Check the country code based on the path
+            if len(path_components) > 2:
+                if path_components[2] == "nl":
+                    country_code = "NL"
+                elif path_components[2] == "be":
+                    country_code = "BE"
+                else:
+                    country_code = "N/A"
+            else:
+                country_code = "N/A"
 
-            # Extract data using specified XPaths
-            name = parsed_content.xpath(xpath_name)[0] if parsed_content.xpath(xpath_name) else "N/A"
-
-            return name  # ,url_to_parse //ONLY if we want to return the url to be scraped
+            return country_code
 
         else:
             print(f"Error: Unable to fetch content. Status code: {response.status_code}")
 
     except Exception as e:
         print(f"Error: {e}")
-
-
-if __name__ == "__main__":
-    print(get_product_name(URL));

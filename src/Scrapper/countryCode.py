@@ -54,3 +54,7 @@ def get_country_code(url_to_scrape):
 
     except Exception as e:
         print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    print(get_country_code(URL));

@@ -49,7 +49,3 @@ def get_product_name(url_to_scrape):
 
     except Exception as e:
         print(f"Error: {e}")
-
-
-if __name__ == "__main__":
-    print(get_product_name(URL));

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Scrapper',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'BigShopper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Replace with your database name
+        'USER': 'rares',  # Replace with your database user
+        'PASSWORD': 'rares',  # Replace with your database password
+        'HOST': 'localhost',  # Or the IP address of your database server
+        'PORT': '5432',  # Leave blank to use the default port
     }
 }
 
