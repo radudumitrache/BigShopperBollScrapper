@@ -1,71 +1,91 @@
 from django.db import models
-from django.db.models import JSONField
+from django.utils import timezone
 
 
-class ScraperConfig(models.Model):
-    scraper_config_id = models.AutoField(primary_key=True)
-    config_settings = models.CharField(max_length=100)
-    country = models.CharField(max_length=2)
-    last_updated_timestamp = models.DateTimeField()
-    version = models.CharField(max_length=50)
+class Feed(models.Model):
+    feedid = models.IntegerField(primary_key=True)
+    partnerid = models.IntegerField()
+    feedurl = models.CharField(max_length=255)
+    lastretrievedtimestamp = models.DateTimeField(null=True, blank=True)
+    feedtype = models.CharField(max_length=50, null=True, blank=True)
+    laststatus = models.CharField(max_length=50, null=True, blank=True)
 
 
 class Product(models.Model):
-    product_id = models.AutoField(primary_key=True)
-    scraper_config = models.ForeignKey(ScraperConfig, on_delete=models.CASCADE)
+    productid = models.AutoField(primary_key=True)
+    partnerid = models.IntegerField()
     ean = models.CharField(max_length=13)
-    details = JSONField(blank=True, null=True)
-    product_title = models.CharField(max_length=255)
-    product_url = models.URLField(max_length=1000)
-    last_scraped_timestamp = models.DateTimeField()
-
-    class Meta:
-        # If you're using a custom table name
-        db_table = 'product'
+    producttitle = models.CharField(max_length=255)
+    producturl = models.CharField(max_length=1000)
+    sellername = models.CharField(max_length=255, null=True, blank=True)
+    lastscrapedtimestamp = models.DateTimeField(default=timezone.now)
 
 
-# Create Price table
-class Price(models.Model):
-    PriceID = models.AutoField(primary_key=True)
-    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE)
-    OriginalPrice = models.DecimalField(max_digits=10, decimal_places=2)
-    SalePrice = models.DecimalField(max_digits=10, decimal_places=2)
-    ShippingPrice = models.DecimalField(max_digits=10, decimal_places=2)
-    PriceTimestamp = models.DateTimeField()
-    PriceDate = models.DateField()
-
-
-# Create ProductSpecification table
-class ProductSpecification(models.Model):
-    ProductSpecificationID = models.AutoField(primary_key=True)
-    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE)
-    SpecificationTimestamp = models.DateTimeField()
-
-
-# Create Feeds table
-class Feeds(models.Model):
-    FeedID = models.AutoField(primary_key=True)
-    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE)
-    FeedURL = models.CharField(max_length=255)
-    LastRetrievedTimestamp = models.DateTimeField()
-    FeedType = models.CharField(max_length=50)
-    LastStatus = models.CharField(max_length=50)
-
-
-# Create Partner table
 class Partner(models.Model):
-    PartnerID = models.AutoField(primary_key=True)
-    Name = models.CharField(max_length=255)
-    IntegrationDetails = models.JSONField()
-    LastDataSentTimestamp = models.DateTimeField()
+    partnerid = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    integrationdetails = models.CharField(max_length=1000, null=True, blank=True)
+    lastdatasenttimestamp = models.DateTimeField(null=True, blank=True)
 
 
-# Create ProductPartner junction table
-class ProductPartner(models.Model):
-    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE)
-    PartnerID = models.ForeignKey(Partner, on_delete=models.CASCADE)
-    IntegrationDetails = models.JSONField()
-    LastDataSentTimestamp = models.DateTimeField()
+class Price(models.Model):
+    priceid = models.IntegerField(primary_key=True)
+    productid = models.IntegerField()
+    originalprice = models.DecimalField(max_digits=10, decimal_places=2)
+    saleprice = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    shippingprice = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    pricetimestamp = models.DateTimeField()
+    pricedate = models.DateField()
 
-    class Meta:
-        unique_together = ('ProductID', 'PartnerID')
+
+class PriceTrendSummary(models.Model):
+    pricetrendsummaryid = models.IntegerField(primary_key=True)
+    productid = models.IntegerField()
+    partnerid = models.IntegerField()
+    averageoriginalprice = models.DecimalField(max_digits=10, decimal_places=2)
+    averagesaleprice = models.DecimalField(max_digits=10, decimal_places=2)
+    minprice = models.DecimalField(max_digits=10, decimal_places=2)
+    maxprice = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+class ProductSpecification(models.Model):
+    productspecificationid = models.IntegerField(primary_key=True)
+    productid = models.IntegerField()
+    specification = models.CharField(max_length=1000)
+    specificationtimestamp = models.DateTimeField()
+
+
+class ScrapeErrorLog(models.Model):
+    scrapeerrorlogid = models.IntegerField(primary_key=True)
+    scrapesessionid = models.CharField(max_length=10)
+    errormessage = models.CharField(max_length=255)
+    errortimestamp = models.DateTimeField()
+    errortype = models.CharField(max_length=50, null=True, blank=True)
+    errorseverity = models.CharField(max_length=50, null=True, blank=True)
+
+
+class ScraperConfig(models.Model):
+    scraperconfigid = models.IntegerField(primary_key=True)
+    configsettings = models.CharField(max_length=25)
+    country = models.CharField(max_length=2)
+    lastupdatedtimestamp = models.DateTimeField()
+    version = models.CharField(max_length=50, null=True, blank=True)
+
+
+class ScrapeSession(models.Model):
+    scrapesessionid = models.CharField(max_length=10, primary_key=True)
+    scraperconfigid = models.IntegerField(null=True, blank=True)
+    starttime = models.DateTimeField()
+    endtime = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=50)
+    numberofproductsscraped = models.IntegerField()
+    sessionduration = models.DurationField(null=True, blank=True)
+
+
+class ScrapeSummary(models.Model):
+    scrapesummaryid = models.IntegerField(primary_key=True)
+    productid = models.IntegerField()
+    partnerid = models.IntegerField()
+    averageduration = models.DurationField()
+    successrate = models.DecimalField(max_digits=5, decimal_places=2)
+    totalerrors = models.IntegerField()

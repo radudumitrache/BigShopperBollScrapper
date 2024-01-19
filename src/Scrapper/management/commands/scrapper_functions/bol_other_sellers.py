@@ -1,6 +1,4 @@
 import requests
-import json
-# Define the URL of the web page you want to scrape
 from lxml import html
 
 def get_sellers(siteurl, headers, xpath):
@@ -22,6 +20,7 @@ def get_sellers(siteurl, headers, xpath):
             seller_rating = seller.xpath(xpath[8])[0].text_content().replace('\n','').replace(' ','')
             # print([seller_name,seller_price,offer_condition,seller_rating])
             dict_sellers[seller_name] = {"seller_rating": seller_rating,"seller_price" : seller_price,"condition" : offer_condition}
+
         return dict_sellers
     else:
         print(f"Request failed with status code: {response.status_code}")

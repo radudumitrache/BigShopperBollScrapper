@@ -14,11 +14,9 @@ class TestCountryCode(unittest.TestCase):
         self.assertEqual(result, "NL")
 
     def test_expect_be(self):
-        self.assertEqual(get_country_code("https://www.bol.com/nl/be/p/sony-official-playstation-5-dualsense-controller/9300000007897748/"),"BE")
-        result = get_country_code("https://www.bol.com/be/nl/p/sony-official-playstation-5-dualsense-controller/9300000007897748/")
-
+        result = get_country_code(url_be, headers)
         self.assertEqual(result, "BE")
 
     def test_expect_exception(self):
         with self.assertRaises(expected_exception=Exception):
-            get_country_code("Invalid")
+            get_country_code("Invalid", headers)
