@@ -38,7 +38,10 @@ class Command(BaseCommand):
             # select random header
             headers = random.choice(data)
 
-        products_urls = searchForItem(search, headers, region)
+        with open("xpath.json") as json_data:
+            xpath = json.load(json_data)
+
+        products_urls = searchForItem(search, headers, xpath["search"], region)
 
         for product_url in products_urls:
             product_info = get_product_info(product_url, headers)
