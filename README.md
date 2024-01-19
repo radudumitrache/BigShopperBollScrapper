@@ -1,3 +1,11 @@
+
+# Importing the database schema to your local database in PyCharm:
+
+- After setting up PostgreSQL on your computer, navigate to PyCharm and connect to your local database, which is typically named 'postgres' by default.
+- Once connected to your local database, import the schema by right-clicking on the local database, selecting 'SQL Script,' and running the SQL script.
+- This process will import all the database tables and data for you.
+
+
 # Manual
 
 ## Introduction
@@ -93,3 +101,4 @@ The --region flag is mandatory. It allows you to select which region to search i
 - Victor Zwart
 
 For assisting us throughout this project and allowing us to collaborate with Bigshopper
+>>>>>>> a255370c6aa780bd48ba1881884520af4bf0ae03
