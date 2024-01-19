@@ -1,9 +1,9 @@
 import requests
 from lxml import html
 
-def get_product_name(url_to_scrape):
+def get_product_name(url_to_scrape, headers, xpath):
     # Send an HTTP request to the URL
-    response = requests.get(url_to_scrape)
+    response = requests.get(url_to_scrape, headers=headers)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
@@ -11,7 +11,7 @@ def get_product_name(url_to_scrape):
         parsed_content = html.fromstring(response.content)
 
         # Specify XPath expressions for name and URL
-        xpath_name = '//span[@class="u-mr--xs"]/text()'
+        xpath_name = xpath[0]
 
         # Extract data using specified XPaths
         name = parsed_content.xpath(xpath_name)[0] if parsed_content.xpath(xpath_name) else "N/A"

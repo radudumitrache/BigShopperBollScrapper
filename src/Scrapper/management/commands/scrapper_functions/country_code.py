@@ -2,9 +2,9 @@ from urllib.parse import urlparse
 
 import requests
 
-def get_country_code(url_to_scrape):
+def get_country_code(url_to_scrape, headers):
     # Send an HTTP request to the URL
-    response = requests.get(url_to_scrape)
+    response = requests.get(url_to_scrape, headers=headers)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:

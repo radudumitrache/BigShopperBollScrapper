@@ -27,14 +27,17 @@ class Command(BaseCommand):
             # select random header
             headers = random.choice(data)
 
-        products_urls = searchForItem(search, headers, region)
+        with open("xpath.json") as json_data:
+            xpath = json.load(json_data)
+
+        products_urls = searchForItem(search, headers, xpath["search"], region)
 
         for product_url in products_urls:
-            product_info = get_product_info(product_url, headers)
-            all_sellers_info = get_all_sellers_info(product_url, headers)
-            country_code = get_country_code(product_url)
-            product_name = get_product_name(product_url)
-            product_price = get_product_price(product_url, headers)
+            product_info = get_product_info(product_url, headers, xpath["product_info"])
+            all_sellers_info = get_all_sellers_info(product_url, headers, xpath["all_sellers_info"])
+            country_code = get_country_code(product_url, headers)
+            product_name = get_product_name(product_url, headers, xpath["product_name"])
+            product_price = get_product_price(product_url, headers, xpath["product_price"])
 
             result_dict = {
                 "name" : product_name,
