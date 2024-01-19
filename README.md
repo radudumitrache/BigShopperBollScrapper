@@ -101,4 +101,3 @@ The --region flag is mandatory. It allows you to select which region to search i
 - Victor Zwart
 
 For assisting us throughout this project and allowing us to collaborate with Bigshopper
->>>>>>> a255370c6aa780bd48ba1881884520af4bf0ae03
