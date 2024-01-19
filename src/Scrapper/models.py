@@ -1,23 +1,27 @@
 from django.db import models
+from django.db.models import JSONField
 
 
-# Create ScraperConfig table
 class ScraperConfig(models.Model):
-    ScraperConfigID = models.AutoField(primary_key=True)
-    ConfigSettings = models.CharField(max_length=100)
-    Country = models.CharField(max_length=2)
-    LastUpdatedTimestamp = models.DateTimeField()
-    Version = models.CharField(max_length=50)
+    scraper_config_id = models.AutoField(primary_key=True)
+    config_settings = models.CharField(max_length=100)
+    country = models.CharField(max_length=2)
+    last_updated_timestamp = models.DateTimeField()
+    version = models.CharField(max_length=50)
 
 
-# Create Product table
 class Product(models.Model):
-    ProductID = models.AutoField(primary_key=True)
-    ScraperConfigID = models.ForeignKey(ScraperConfig, on_delete=models.CASCADE)
-    EAN = models.CharField(max_length=13)
-    ProductTitle = models.CharField(max_length=255)
-    ProductURL = models.URLField(max_length=1000)
-    LastScrapedTimestamp = models.DateTimeField()
+    product_id = models.AutoField(primary_key=True)
+    scraper_config = models.ForeignKey(ScraperConfig, on_delete=models.CASCADE)
+    ean = models.CharField(max_length=13)
+    details = JSONField(blank=True, null=True)
+    product_title = models.CharField(max_length=255)
+    product_url = models.URLField(max_length=1000)
+    last_scraped_timestamp = models.DateTimeField()
+
+    class Meta:
+        # If you're using a custom table name
+        db_table = 'product'
 
 
 # Create Price table
