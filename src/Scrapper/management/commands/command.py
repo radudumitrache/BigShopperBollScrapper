@@ -1,21 +1,14 @@
 import decimal
-import datetime
-from django.core.management.base import BaseCommand
-#import bol scraper module 
-#import bol scraper function
-#import save_to_db
-#import new prices from sellers
-from .scrapper_functions import *
 import json
 import random
-from django.utils import timezone
-from django.core.management.base import BaseCommand
 import re
+
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+
+from ...models import *
 from .scrapper_functions import *
 
-from .scrapper_functions import search_for_product
-import sys
-from ...models import *
 class Command(BaseCommand):
     help = "Scrape bol.com product information"
 
@@ -29,6 +22,7 @@ class Command(BaseCommand):
         search = kwargs["search"]
         region = kwargs["region"].pop().lower()
         scraper_config = ScraperConfig.objects.filter(country="NL").first()
+
         if not ("nl" in region or "be" in region):
             print("Please enter a valid region")
             return
@@ -38,14 +32,17 @@ class Command(BaseCommand):
             # select random header
             headers = random.choice(data)
 
-        products_urls = searchForItem(search, headers, region)
+        with open("xpath.json") as json_data:
+            xpath = json.load(json_data)
+
+        products_urls = searchForItem(search, headers, xpath["search"], region)
 
         for product_url in products_urls:
-            product_info = get_product_info(product_url, headers)
-            all_sellers_info = get_all_sellers_info(product_url, headers)
-            country_code = get_country_code(product_url)
-            product_name = get_product_name(product_url)
-            product_price_values = get_product_price(product_url, headers)
+            product_info = get_product_info(product_url, headers, xpath["product_info"])
+            all_sellers_info = get_all_sellers_info(product_url, headers, xpath["all_sellers_info"])
+            country_code = get_country_code(product_url, headers)
+            product_name = get_product_name(product_url, headers, xpath["product_name"])
+            product_price = get_product_price(product_url, headers, xpath["product_price"])
             seller_name = "retrieve failed"
 
             if all_sellers_info is not None:
@@ -79,7 +76,7 @@ class Command(BaseCommand):
 
             result_dict = {
                 "name" : product_name,
-                "product_price" : product_price_values,
+                "product_price" : product_price,
                 "country_code" : country_code,
                 "product_info" : product_info,
                 "other_sellers" : all_sellers_info,
@@ -139,10 +136,10 @@ class Command(BaseCommand):
             # Add this print statement to check the details field after setting it
             print(f"Details after setting details: {product.details}")
 
-            if isinstance(product_price_values, tuple) and len(product_price_values) == 2:
-                sale_price, original_price = product_price_values
+            if isinstance(product_price, tuple) and len(product_price) == 2:
+                sale_price, original_price = product_price
             else:
-                sale_price, original_price = product_price_values, product_price_values
+                sale_price, original_price = product_price, product_price
 
             # Handle the case when original_price is None (set it to 0.0)
             if original_price is None:

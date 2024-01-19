@@ -7,7 +7,7 @@ import requests
 from Levenshtein import ratio
 from lxml import html
 
-def searchForItem(items: list, headers, country_code="nl", language_code="nl"):
+def searchForItem(items: list, headers, xpath, country_code="nl", language_code="nl"):
     output_urls = []
     output_titles = []
     index_counter = -1
@@ -47,9 +47,7 @@ def searchForItem(items: list, headers, country_code="nl", language_code="nl"):
                 parsed_content = html.fromstring(page_content)
 
                 # Xpath for the url of the product
-                elements = parsed_content.xpath(
-                    "//li[contains(@class, 'product-item--row') and contains(@class, 'js_item_root') and not("
-                    "contains(@class, 'js_sponsored_product'))]//a[@role='heading']/@href")
+                elements = parsed_content.xpath(xpath[0])
 
                 # error check
                 if elements is None:

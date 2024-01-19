@@ -1,0 +1,28 @@
+{
+    "search": [
+        "//li[contains(@class, 'product-item--row') and contains(@class, 'js_item_root') and not(contains(@class, 'js_sponsored_product'))]//a[@role='heading']/@href"
+    ],
+    "product_info": [
+        ".//div[@class=\"specs\"]/dl[@class=\"specs__list\"]/div[@class=\"specs__row\"]",
+        ".//dt[@class=\"specs__title\"]/text()",
+        ".//dd[@class=\"specs__value\"]"
+    ],
+    "all_sellers_info": [
+        "//a[@data-label=\"all-sellers\"]/@href",
+        "//ul[@id=\"offers\"]/*",
+        ".//div[@data-test=\"about-seller-block\"]",
+        ".//div[@data-test=\"about-offer-block\"]",
+        ".//div[@data-test=\"about-price-block\"]",
+        ".//p/*",
+        ".//span[@class=\"h-nowrap product-prices__bol-price\"]",
+        ".//div[@class=\"about-offer-condition\"]//strong",
+        ".//div[@data-test=\"seller-rating\"]"
+    ],
+    "product_name": [
+        "//span[@class=\"u-mr--xs\"]/text()"
+    ],
+    "product_price": [
+        "//span[@class=\"promo-price\"]",
+        "//div[starts-with(@class, \"ab-discount\")]/del[@data-test=\"list-price\"]"
+    ]
+}

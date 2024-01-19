@@ -14,17 +14,17 @@ def web_request(url, headers):
     response = requests.get(url, headers)
     return response
 
-def get_product_info(url, headers):
+def get_product_info(url, headers, xpath):
     response = web_request(url, headers)
 
     if response.status_code == 200:
         results = dict()
         tree = html.fromstring(response.content)
-        specs = tree.xpath('.//div[@class="specs"]/dl[@class="specs__list"]/div[@class="specs__row"]')
+        specs = tree.xpath(xpath[0])
 
         for spec in specs:
-            spec_title = spec.xpath('.//dt[@class="specs__title"]/text()')
-            spec_value = spec.xpath('.//dd[@class="specs__value"]')
+            spec_title = spec.xpath(xpath[1])
+            spec_value = spec.xpath(xpath[2])
 
             if spec_title and spec_value:
                 results[spec_title[0].strip()] = clean_text(spec_value[0].text_content().strip())
